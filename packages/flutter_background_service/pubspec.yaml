@@ -16,7 +16,6 @@ dependencies:
 
   flutter_background_service_platform_interface: ^2.1.4
   flutter_background_service_android: ^2.4.0
-  flutter_background_service_ios: ^2.2.4
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -34,5 +33,3 @@ flutter:
     platforms:
       android:
         default_package: flutter_background_service_android
-      ios:
-        default_package: flutter_background_service_ios
