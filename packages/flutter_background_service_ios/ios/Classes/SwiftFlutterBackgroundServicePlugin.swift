@@ -165,7 +165,7 @@ public class SwiftFlutterBackgroundServicePlugin: FlutterPluginAppLifeCycleDeleg
             let backgroundEntrypointCallbackHandleID = args?["background_entrypoint_handle"] as? NSNumber
             let foregroundCallbackHandleID = args?["foreground_handle"] as? NSNumber
             let backgroundCallbackHandleID = args?["background_handle"] as? NSNumber
-            let autoStart = (args?["auto_start"] as? Bool)??false
+            let autoStart = args?["auto_start"] as? Bool
             
             let defaults = UserDefaults.standard
             defaults.set(foregroundEntrypointCallbackHandleID?.int64Value, forKey: "foreground_entrypoint_callback_handle")
@@ -178,7 +178,7 @@ public class SwiftFlutterBackgroundServicePlugin: FlutterPluginAppLifeCycleDeleg
 
             self.autoStart(isForeground: true)
 
-            if(autoStart) {
+            if(autoStart == true) {
 
                 UIApplication.shared.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalMinimum)
 
