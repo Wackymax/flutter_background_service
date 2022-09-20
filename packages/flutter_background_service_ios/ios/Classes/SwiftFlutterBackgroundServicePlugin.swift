@@ -178,7 +178,7 @@ public class SwiftFlutterBackgroundServicePlugin: FlutterPluginAppLifeCycleDeleg
 
             self.autoStart(isForeground: true)
 
-            if(autoStart) {
+            if(autoStart??) {
 
                 UIApplication.shared.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalMinimum)
 
