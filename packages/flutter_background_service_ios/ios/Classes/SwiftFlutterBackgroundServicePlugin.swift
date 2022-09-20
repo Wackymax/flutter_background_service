@@ -33,13 +33,7 @@ public class SwiftFlutterBackgroundServicePlugin: FlutterPluginAppLifeCycleDeleg
     }
         
     public override func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [AnyHashable : Any] = [:]) -> Bool {
-        
-        UIApplication.shared.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalMinimum)
-        
-        if #available(iOS 13.0, *) {
-            registerBackgroundTasks()
-        }
-        
+
         return true
     }
     
@@ -103,16 +97,20 @@ public class SwiftFlutterBackgroundServicePlugin: FlutterPluginAppLifeCycleDeleg
     private func handleBackgroundMethodCall(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         if (call.method == "getForegroundHandler") {
             let defaults = UserDefaults.standard
-            let callbackHandle = defaults.object(forKey: "foreground_callback_handle") as! Int64
-            result(callbackHandle)
-            return
+            let callbackHandle = defaults.object(forKey: "foreground_callback_handle") as? Int64
+            if(callbackHandle != nil) {
+                result(callbackHandle)
+            }
+            return;
         }
         
         if (call.method == "getBackgroundHandler") {
             let defaults = UserDefaults.standard
-            let callbackHandle = defaults.object(forKey: "background_callback_handle") as! Int64
-            result(callbackHandle)
-            return
+            let callbackHandle = defaults.object(forKey: "background_callback_handle") as? Int64
+            if(callbackHandle != nil) {
+                result(callbackHandle)
+            }
+            return;
         }
         
         if (call.method == "setBackgroundFetchResult" && tmpCompletionHandler != nil) {
@@ -177,8 +175,17 @@ public class SwiftFlutterBackgroundServicePlugin: FlutterPluginAppLifeCycleDeleg
             defaults.set(foregroundCallbackHandleID?.int64Value, forKey: "foreground_callback_handle")
             defaults.set(backgroundCallbackHandleID?.int64Value, forKey: "background_callback_handle")
             defaults.set(autoStart, forKey: "auto_start")
-            
+
             self.autoStart(isForeground: true)
+
+            if(autoStart) {
+
+                UIApplication.shared.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalMinimum)
+
+                if #available(iOS 13.0, *) {
+                    registerBackgroundTasks()
+                }
+            }
             
             result(true)
             return
